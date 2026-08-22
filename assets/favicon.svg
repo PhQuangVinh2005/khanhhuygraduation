@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle with Glow -->
+  <circle cx="50" cy="50" r="46" fill="url(#bgGrad)" stroke="#38BDF8" stroke-width="3"/>
+
+  <!-- Cap Crown Base -->
+  <path d="M 30 50 v 15 c 0 10 40 10 40 0 v -15 Z" fill="#0C4A6E" stroke="#082F49" stroke-width="1.5"/>
+
+  <!-- Cap Diamond Top -->
+  <polygon points="50,22 84,38 50,54 16,38" fill="url(#capGrad)" stroke="#FFFFFF" stroke-width="2"/>
+
+  <!-- Center Button -->
+  <circle cx="50" cy="38" r="3" fill="#FFFFFF"/>
+
+  <!-- Gold Tassel -->
+  <path d="M 50 38 Q 68 40 76 50" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="76" cy="52" r="3.5" fill="#FEF08A"/>
+  <path d="M 73 54 L 79 54 L 81 66 L 71 66 Z" fill="url(#goldGrad)"/>
+
+  <!-- Sparkle Stars -->
+  <polygon points="24,24 26,20 28,24 32,26 28,28 26,32 24,28 20,26" fill="#FEF08A"/>
+</svg>

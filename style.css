@@ -1,0 +1,872 @@
+/* ==========================================================================
+   STYLE.CSS - BLUE SKY & ROYAL GOLD BLIND BAG GRADUATION INVITATION
+   ========================================================================== */
+
+:root {
+    --pearl-white: #FFFDF9;
+    --sky-lightest: #F0F9FF;
+    --sky-100: #E0F2FE;
+    --sky-200: #BAE6FD;
+    --sky-300: #7DD3FC;
+    --sky-400: #38BDF8;
+    --sky-500: #0EA5E9;
+    --sky-600: #0284C7;
+    --sky-700: #0369A1;
+    --sky-800: #075985;
+    --navy-900: #0A1128;
+    --navy-950: #050B1A;
+
+    --gold-100: #FEF08A;
+    --gold-200: #FDE047;
+    --gold-300: #FACC15;
+    --gold-400: #F59E0B;
+    --gold-500: #D97706;
+    --gold-glow: rgba(245, 158, 11, 0.4);
+
+    --dark-text: #0F172A;
+    --blue-border: #38BDF8;
+}
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--navy-950);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--dark-text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Mobile-first App Container */
+.app-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #0A192F 0%, #0C2E59 40%, #0F3B6E 80%, #0A192F 100%);
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 4px solid rgba(56, 189, 248, 0.3);
+    border-right: 4px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 60px rgba(14, 165, 233, 0.25);
+    z-index: 1;
+    padding-bottom: 24px;
+}
+
+/* Canvas hạt nền & pháo hoa xé túi */
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Hiệu ứng lóa sáng ma thuật Blue Sky khi xé túi */
+.magical-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #FFF 0%, #BAE6FD 45%, rgba(14, 165, 233, 0) 100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 90;
+    transition: opacity 0.4s ease-out;
+}
+
+.flash-active {
+    opacity: 1;
+}
+
+/* Banner chúc mừng mở được Rare Card */
+.congrats-banner {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+    transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.show-congrats {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.congrats-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--gold-300);
+    text-shadow: 2px 2px 0px #0284C7, 0 0 14px rgba(250, 204, 21, 0.8);
+    margin-bottom: 8px;
+    animation: flash 0.8s infinite alternate;
+}
+
+.congrats-subtitle {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #BAE6FD;
+    text-shadow: 1px 1px 0px #0369A1;
+}
+
+@keyframes flash {
+    0% { opacity: 0.8; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1.02); }
+}
+
+/* ==========================================================================
+   GIAI ĐOẠN 1 & 2: SECRET BLIND BAG
+   ========================================================================== */
+
+.bag-stage-wrapper {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding: 20px 16px;
+}
+
+.top-header-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8.5px;
+    color: #BAE6FD;
+    background: rgba(2, 132, 199, 0.25);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.top-header-badge .star-icon {
+    color: #F59E0B;
+}
+
+/* Hoạt ảnh nhịp thở và bập bềnh của túi mù */
+@keyframes bagBreathing {
+    0% {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 10px 20px rgba(14, 165, 233, 0.4)) drop-shadow(0 0 10px rgba(245, 158, 11, 0.2));
+    }
+    50% {
+        transform: translateY(-8px) scale(1.025);
+        filter: drop-shadow(0 16px 28px rgba(14, 165, 233, 0.6)) drop-shadow(0 0 18px rgba(245, 158, 11, 0.4));
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 10px 20px rgba(14, 165, 233, 0.4)) drop-shadow(0 0 10px rgba(245, 158, 11, 0.2));
+    }
+}
+
+.bag-container {
+    position: relative;
+    width: 250px;
+    height: 380px;
+    cursor: pointer;
+    user-select: none;
+    animation: bagBreathing 4s ease-in-out infinite;
+    transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bag-container:hover {
+    transform: scale(1.04) translateY(-3px);
+}
+
+.bag-container:active {
+    transform: scale(0.97) translateY(2px);
+}
+
+/* Hiệu ứng tia sáng lia qua túi */
+.bag-shine {
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.35) 45%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.35) 55%,
+        transparent 80%
+    );
+    z-index: 5;
+    pointer-events: none;
+    animation: shineSweep 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes shineSweep {
+    0%, 40% { left: -150%; }
+    70%, 100% { left: 150%; }
+}
+
+/* Các mảnh phần trên & dưới của túi mù */
+.bag-top {
+    position: relative;
+    width: 100%;
+    height: 95px;
+    z-index: 3;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bag-tear-gap {
+    position: relative;
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+    z-index: 2;
+    transition: height 0.2s ease-out;
+}
+
+.bag-bottom {
+    position: relative;
+    width: 100%;
+    height: 285px;
+    z-index: 3;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Tương tác khi tap xé túi */
+.shake-light {
+    animation: shakeLight 0.25s ease-in-out !important;
+}
+
+.shake-medium {
+    animation: shakeMedium 0.3s ease-in-out !important;
+}
+
+.shake-heavy {
+    animation: shakeHeavy 0.35s ease-in-out !important;
+}
+
+@keyframes shakeLight {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-3px, -2px) rotate(-1deg); }
+    75% { transform: translate(3px, 2px) rotate(1deg); }
+}
+
+@keyframes shakeMedium {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    20% { transform: translate(-5px, -3px) rotate(-2deg); }
+    40% { transform: translate(5px, 3px) rotate(2deg); }
+    60% { transform: translate(-4px, 2px) rotate(-1.5deg); }
+    80% { transform: translate(4px, -2px) rotate(1.5deg); }
+}
+
+@keyframes shakeHeavy {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-8px, -5px) rotate(-3.5deg); }
+    30% { transform: translate(8px, 5px) rotate(3.5deg); }
+    45% { transform: translate(-7px, 3px) rotate(-2.5deg); }
+    60% { transform: translate(7px, -4px) rotate(2.5deg); }
+    75% { transform: translate(-4px, 2px) rotate(-1deg); }
+    90% { transform: translate(4px, -2px) rotate(1deg); }
+}
+
+/* Mở tung túi */
+.bag-top.torn {
+    transform: translateY(-80px) rotate(-12deg) scale(0.95);
+    opacity: 0;
+}
+
+.bag-bottom.torn {
+    transform: translateY(100px) rotate(8deg) scale(0.95);
+    opacity: 0;
+}
+
+/* Text chỉ dẫn & thanh tiến độ Tap */
+.bag-labels {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.bag-sub-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8.5px;
+    color: #BAE6FD;
+    letter-spacing: 1px;
+}
+
+.instruction-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--gold-300);
+    text-shadow: 1px 1px 0px #0284C7;
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+.tap-progress-bar {
+    width: 140px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.tap-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #38BDF8, #F59E0B);
+    transition: width 0.2s ease-out;
+}
+
+/* Card Pool Checklist Container */
+.card-pool-container {
+    width: 100%;
+    max-width: 370px;
+    background: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(56, 189, 248, 0.35);
+    border-radius: 18px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.pool-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: #BAE6FD;
+    text-shadow: 1px 1px 0px #0369A1, 0 0 10px rgba(56, 189, 248, 0.5);
+    letter-spacing: 0.8px;
+    text-align: center;
+}
+
+/* Hàng 1: 4 Thẻ Common & Rare */
+.pool-row-common-rare {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    width: 100%;
+    justify-items: center;
+}
+
+/* Hàng 2: 2 Thẻ Super Rare & Special */
+.pool-row-sr-special {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.pool-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    max-width: 78px;
+}
+
+.pool-card-border {
+    position: relative;
+    width: 66px;
+    height: 86px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0F172A;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.common-border {
+    border-color: #38BDF8;
+}
+
+.rare-border {
+    border-color: #06B6D4;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+.sr-border {
+    border-color: #A855F7;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+
+.special-border {
+    border-color: #F59E0B;
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.7);
+}
+
+.pool-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.pool-card-border.blurred .pool-card-image {
+    filter: blur(5px) grayscale(90%) brightness(0.35);
+}
+
+.pool-card-border.blurred {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+.pool-question-mark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 15px;
+    color: #BAE6FD;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.sr-border .pool-question-mark {
+    color: #C084FC;
+    text-shadow: 0 0 8px #A855F7;
+}
+
+.special-border .pool-question-mark {
+    color: #FACC15;
+    text-shadow: 0 0 8px #F59E0B;
+}
+
+.pool-card-border.unlocked {
+    animation: unlockGlow 1.2s ease-in-out;
+}
+
+@keyframes unlockGlow {
+    0% { transform: scale(1); filter: brightness(1.8) drop-shadow(0 0 15px #38BDF8); }
+    50% { transform: scale(1.08); filter: brightness(1.4) drop-shadow(0 0 20px #F59E0B); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+.pool-card-border:not(.blurred) {
+    cursor: pointer;
+}
+
+.pool-card-border:not(.blurred):hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.pool-badge {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 7.8px;
+    font-weight: 700;
+    padding: 2.5px 2px;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    color: #FFFFFF !important;
+    background: rgba(2, 132, 199, 0.5);
+    border: 1px solid #38BDF8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.15px;
+}
+
+.pool-badge.locked {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #94A3B8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.common-badge {
+    background: rgba(2, 132, 199, 0.6) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #38BDF8 !important;
+    text-shadow: 0 0 6px rgba(56, 189, 248, 0.8) !important;
+}
+
+.rare-badge {
+    background: rgba(8, 145, 178, 0.7) !important;
+    color: #CFFAFE !important;
+    border: 1px solid #06B6D4 !important;
+    text-shadow: 0 0 6px rgba(6, 182, 212, 0.9) !important;
+}
+
+.sr-badge {
+    background: rgba(126, 34, 206, 0.75) !important;
+    color: #F3E8FF !important;
+    border: 1px solid #C084FC !important;
+    text-shadow: 0 0 8px rgba(192, 132, 252, 0.9) !important;
+}
+
+.special-badge {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.85), rgba(245, 158, 11, 0.75)) !important;
+    color: #FEF08A !important;
+    border: 1px solid #FDE047 !important;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.9) !important;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   GIAI ĐOẠN 3: RARE PHOTOCARD & 3D FLIP INVITATION
+   ========================================================================== */
+
+.card-stage-wrapper {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    perspective: 1400px;
+}
+
+.card {
+    width: 290px;
+    height: 455px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.9s cubic-bezier(0.4, 0.2, 0.2, 1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 165, 233, 0.4);
+    border-radius: 20px;
+}
+
+.card-inner.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* --- MẶT TRƯỚC: RARE PHOTOCARD --- */
+.card-front {
+    background: #0B192C;
+    border: 3px solid #38BDF8;
+    box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.3);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card-front.tier-common {
+    border-color: #38BDF8;
+    box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.3), 0 0 25px rgba(56, 189, 248, 0.4);
+}
+
+.card-front.tier-rare {
+    border-color: #06B6D4;
+    box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.4), 0 0 30px rgba(6, 182, 212, 0.55);
+}
+
+.card-front.tier-sr {
+    border-color: #A855F7;
+    box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.4), 0 0 35px rgba(168, 85, 247, 0.65);
+}
+
+.card-front.tier-special {
+    border-color: #F59E0B;
+    box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.4), 0 0 45px rgba(245, 158, 11, 0.8), 0 0 20px rgba(254, 240, 138, 0.6);
+}
+
+.photocard-border {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.photocard-image-container {
+    width: 100%;
+    height: 82%;
+    position: relative;
+    background: #021B3A;
+    overflow: hidden;
+}
+
+.photocard-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.hologram-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        125deg,
+        rgba(56, 189, 248, 0) 30%,
+        rgba(250, 204, 21, 0.35) 45%,
+        rgba(56, 189, 248, 0.45) 55%,
+        rgba(250, 204, 21, 0) 70%
+    );
+    mix-blend-mode: color-dodge;
+    pointer-events: none;
+    z-index: 4;
+    animation: holoMove 4s ease-in-out infinite alternate;
+}
+
+@keyframes holoMove {
+    0% { transform: translateY(-50%) rotate(15deg); }
+    100% { transform: translateY(50%) rotate(15deg); }
+}
+
+.photocard-footer {
+    height: 18%;
+    background: linear-gradient(180deg, #0B192C 0%, #050B1A 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 2px solid rgba(56, 189, 248, 0.4);
+}
+
+.rarity-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #FACC15;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    letter-spacing: 0.5px;
+    animation: pulse 1.8s infinite ease-in-out;
+}
+
+/* --- MẶT SAU: THIỆP MỜI GRADUATION INVITATION --- */
+.card-back {
+    background: #FFFFFF;
+    color: #0F172A;
+    transform: rotateY(180deg);
+    border: 3px solid #0284C7;
+}
+
+.pixel-border-back {
+    width: 100%;
+    height: 100%;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 60%, #E0F2FE 100%);
+}
+
+.invitation-header {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-bottom: 2px dashed #7DD3FC;
+    padding-bottom: 6px;
+}
+
+.invitation-header h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #0369A1;
+    letter-spacing: 0.3px;
+}
+
+.header-sparkle {
+    color: #F59E0B;
+    font-size: 12px;
+}
+
+.hero-pixel-box {
+    background: #E0F2FE;
+    border-left: 3px solid #0284C7;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin: 4px 0;
+}
+
+.hero-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #075985;
+    line-height: 1.35;
+}
+
+.invitation-details {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.detail-row.header-row {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7.5px;
+    color: #0284C7;
+    text-align: center;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+}
+
+.star-gold {
+    color: #F59E0B;
+}
+
+.detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.row-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: #0284C7;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.row-value {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1E293B;
+    line-height: 1.3;
+}
+
+.bold-blue {
+    color: #0284C7;
+    font-weight: 700;
+}
+
+.font-wrap {
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.card-back-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 7px 8px;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-map {
+    background: #0284C7;
+    color: #FFFFFF;
+}
+
+.btn-map:hover {
+    background: #0369A1;
+}
+
+.btn-flip {
+    background: #E2E8F0;
+    color: #1E293B;
+}
+
+.btn-flip:hover {
+    background: #CBD5E1;
+}
+
+/* ==========================================================================
+   NÚT ÂM THANH
+   ========================================================================== */
+
+.music-toggle {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(8px);
+    border: 2px solid #38BDF8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.music-toggle:hover {
+    transform: scale(1.1);
+}
+
+.music-toggle:active {
+    transform: scale(0.95);
+}

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEU Class of 2026 - Secret Blind Bag Graduation Invitation 🎓</title>
+    <!-- Favicon (Tab Icon) -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <!-- Pixel & Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Canvas cho hiệu ứng nền động (Stars, Graduation Caps, Diamonds, Bubbles) và pháo hoa mở túi -->
+        <canvas id="particle-canvas"></canvas>
+
+        <!-- Hiệu ứng lóa sáng ma thuật Blue Sky & Gold khi xé túi -->
+        <div class="magical-flash" id="magical-flash"></div>
+
+        <!-- Banner chúc mừng mở Card -->
+        <div class="congrats-banner" id="congrats-banner">
+            <div class="congrats-title">✨ CARD UNLOCKED! ✨</div>
+            <div class="congrats-subtitle">You found a Graduation Card!</div>
+        </div>
+
+        <!-- ================= GIAI ĐOẠN 1 & 2: TÚI MÙ SECRET BLIND BAG ================= -->
+        <div class="bag-stage-wrapper" id="bag-stage">
+            <!-- Header nhỏ trên túi -->
+            <div class="top-header-badge">
+                <span class="star-icon">★</span> NEU CLASS OF 2026 <span class="star-icon">★</span>
+            </div>
+
+            <!-- Container túi mù -->
+            <div class="bag-container" id="blind-bag">
+                <!-- Lớp phủ bóng gương phản chiếu ánh sáng (Shine Sweep) -->
+                <div class="bag-shine"></div>
+
+                <!-- Phần đầu túi mù (SVG Răng cưa & Viền Vàng/Xanh) -->
+                <div class="bag-top" id="bag-top-piece">
+                    <svg viewBox="0 0 300 110" width="100%" height="100%" shape-rendering="crispEdges">
+                        <defs>
+                            <linearGradient id="bag-grad-top" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#F0F9FF" />
+                                <stop offset="50%" stop-color="#E0F2FE" />
+                                <stop offset="100%" stop-color="#BAE6FD" />
+                            </linearGradient>
+                            <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FEF08A" />
+                                <stop offset="50%" stop-color="#F59E0B" />
+                                <stop offset="100%" stop-color="#D97706" />
+                            </linearGradient>
+                            <linearGradient id="blue-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#0284C7" />
+                                <stop offset="50%" stop-color="#0EA5E9" />
+                                <stop offset="100%" stop-color="#38BDF8" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Thân đầu túi -->
+                        <path
+                            d="M 10 110 v -80 L 20 20 L 30 30 L 40 20 L 50 30 L 60 20 L 70 30 L 80 20 L 90 30 L 100 20 L 110 30 L 120 20 L 130 30 L 140 20 L 150 30 L 160 20 L 170 30 L 180 20 L 190 30 L 200 20 L 210 30 L 220 20 L 230 30 L 240 20 L 250 30 L 260 20 L 270 30 L 280 20 L 290 30 v 80 h -280 Z"
+                            fill="url(#bag-grad-top)" stroke="url(#blue-grad)" stroke-width="4" />
+                        <!-- Viền răng cưa gấp nếp -->
+                        <path
+                            d="M 10 30 L 20 20 L 30 30 L 40 20 L 50 30 L 60 20 L 70 30 L 80 20 L 90 30 L 100 20 L 110 30 L 120 20 L 130 30 L 140 20 L 150 30 L 160 20 L 170 30 L 180 20 L 190 30 L 200 20 L 210 30 L 220 20 L 230 30 L 240 20 L 250 30 L 260 20 L 270 30 L 280 20 L 290 30"
+                            fill="none" stroke="url(#blue-grad)" stroke-width="4" />
+
+                        <!-- Viền vàng Gold đầu túi -->
+                        <path d="M 20 110 v -70 h 260 v 70" fill="none" stroke="url(#gold-grad)" stroke-width="3"
+                            stroke-dasharray="6 4" />
+
+                        <!-- Điểm nhấn ánh kim -->
+                        <rect x="75" y="60" width="5" height="5" fill="url(#gold-grad)" />
+                        <rect x="220" y="65" width="5" height="5" fill="#38BDF8" />
+                        <rect x="200" y="70" width="4" height="4" fill="#FFF" />
+                    </svg>
+                </div>
+
+                <!-- Khe rách ở giữa túi (Giãn rộng khi tap) -->
+                <div class="bag-tear-gap" id="bag-tear-gap">
+                    <svg viewBox="0 0 300 20" width="100%" height="100%" preserveAspectRatio="none"
+                        shape-rendering="crispEdges">
+                        <path
+                            d="M 10 10 L 20 18 L 30 2 L 40 18 L 50 2 L 60 18 L 70 2 L 80 18 L 90 2 L 100 18 L 110 2 L 120 18 L 135 2 L 150 18 L 165 2 L 180 18 L 195 2 L 210 18 L 225 2 L 240 18 L 255 2 L 270 18 L 280 2 L 290 10"
+                            fill="none" stroke="url(#blue-grad)" stroke-width="4" />
+                    </svg>
+                </div>
+
+                <!-- Phần thân túi dưới -->
+                <div class="bag-bottom" id="bag-bottom-piece">
+                    <svg viewBox="0 0 300 335" width="100%" height="100%" shape-rendering="crispEdges">
+                        <defs>
+                            <linearGradient id="bag-grad-bottom" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#BAE6FD" />
+                                <stop offset="35%" stop-color="#E0F2FE" />
+                                <stop offset="100%" stop-color="#FFFFFF" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Thân túi dưới -->
+                        <path
+                            d="M 10 0 h 280 v 325 L 280 335 L 270 325 L 260 335 L 250 325 L 240 335 L 230 325 L 220 335 L 210 325 L 200 335 L 190 325 L 180 335 L 170 325 L 160 335 L 150 325 L 140 335 L 130 325 L 120 335 L 110 325 L 100 335 L 90 325 L 80 335 L 70 325 L 60 335 L 50 325 L 40 335 L 30 325 L 20 335 L 10 325 v -325 Z"
+                            fill="url(#bag-grad-bottom)" stroke="url(#blue-grad)" stroke-width="4" />
+                        <!-- Răng cưa đáy túi -->
+                        <path
+                            d="M 290 325 L 280 335 L 270 325 L 260 335 L 250 325 L 240 335 L 230 325 L 220 335 L 210 325 L 200 335 L 190 325 L 180 335 L 170 325 L 160 335 L 150 325 L 140 335 L 130 325 L 120 335 L 110 325 L 100 335 L 90 325 L 80 335 L 70 325 L 60 335 L 50 325 L 40 335 L 30 325 L 20 335 L 10 325"
+                            fill="none" stroke="url(#blue-grad)" stroke-width="4" />
+
+                        <!-- Viền vàng chỉ may quanh thân túi -->
+                        <path d="M 20 0 v 305 h 260 v -305" fill="none" stroke="url(#gold-grad)" stroke-width="3"
+                            stroke-dasharray="6 4" />
+
+                        <!-- Huy hiệu Seal Tốt Nghiệp USTH ở tâm túi -->
+                        <g transform="translate(150, 145)">
+                            <!-- Vòng tròn nền seal màu xanh biển nhạt & viền vàng -->
+                            <circle cx="0" cy="0" r="50" fill="#F0F9FF" stroke="url(#gold-grad)" stroke-width="4" />
+                            <circle cx="0" cy="0" r="44" fill="none" stroke="#38BDF8" stroke-width="2"
+                                stroke-dasharray="4 3" />
+
+                            <!-- Mũ Tốt Nghiệp Pixel Art Xanh Sapphire & Dây Vàng -->
+                            <g transform="translate(-150, -120)">
+                                <!-- Thân mũ -->
+                                <rect x="130" y="130" width="40" height="15" fill="#0284C7" />
+                                <rect x="130" y="145" width="40" height="3" fill="#BAE6FD" />
+
+                                <!-- Mặt trên mũ (Hình thoi Pixel) -->
+                                <rect x="150" y="105" width="10" height="3" fill="#38BDF8" />
+                                <rect x="140" y="108" width="30" height="3" fill="#38BDF8" />
+                                <rect x="130" y="111" width="50" height="3" fill="#38BDF8" />
+                                <rect x="120" y="114" width="70" height="3" fill="#38BDF8" />
+                                <rect x="110" y="117" width="90" height="3" fill="#38BDF8" />
+                                <rect x="120" y="120" width="70" height="3" fill="#38BDF8" />
+                                <rect x="130" y="123" width="50" height="3" fill="#38BDF8" />
+
+                                <!-- Viền hình thoi -->
+                                <rect x="150" y="102" width="10" height="3" fill="#0369A1" />
+                                <rect x="160" y="105" width="10" height="3" fill="#0369A1" />
+                                <rect x="170" y="108" width="10" height="3" fill="#0369A1" />
+                                <rect x="180" y="111" width="10" height="3" fill="#0369A1" />
+                                <rect x="190" y="114" width="10" height="3" fill="#0369A1" />
+                                <rect x="180" y="117" width="10" height="3" fill="#0369A1" />
+                                <rect x="170" y="120" width="10" height="3" fill="#0369A1" />
+                                <rect x="160" y="123" width="10" height="3" fill="#0369A1" />
+                                <rect x="130" y="123" width="10" height="3" fill="#0369A1" />
+                                <rect x="120" y="120" width="10" height="3" fill="#0369A1" />
+                                <rect x="110" y="117" width="10" height="3" fill="#0369A1" />
+                                <rect x="120" y="114" width="10" height="3" fill="#0369A1" />
+                                <rect x="130" y="111" width="10" height="3" fill="#0369A1" />
+                                <rect x="140" y="108" width="10" height="3" fill="#0369A1" />
+
+                                <!-- Dây tua rua mũ vàng Gold -->
+                                <rect x="155" y="114" width="10" height="3" fill="#F59E0B" />
+                                <rect x="145" y="117" width="10" height="3" fill="#F59E0B" />
+                                <rect x="135" y="120" width="10" height="3" fill="#F59E0B" />
+                                <rect x="130" y="130" width="5" height="12" fill="#F59E0B" />
+                                <rect x="128" y="145" width="9" height="7" fill="#F59E0B" />
+                            </g>
+                        </g>
+
+                        <!-- Điểm sáng trang trí -->
+                        <rect x="50" y="50" width="4" height="4" fill="#38BDF8" />
+                        <rect x="250" y="60" width="4" height="4" fill="url(#gold-grad)" />
+                        <rect x="60" y="180" width="4" height="4" fill="url(#gold-grad)" />
+                        <rect x="235" y="175" width="4" height="4" fill="#38BDF8" />
+
+                        <!-- Nhãn chữ trang trí -->
+                        <text x="150" y="248" font-family="'Press Start 2P'" font-size="11" fill="url(#gold-grad)"
+                            stroke="#0284C7" stroke-width="1.2" text-anchor="middle">NEU • 2026</text>
+                        <text x="150" y="272" font-family="'Press Start 2P'" font-size="8.5" fill="#0369A1"
+                            text-anchor="middle">★ SECRET GRAD PACK ★</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Các dòng chữ trạng thái dưới túi -->
+            <div class="bag-labels">
+                <div class="bag-sub-text">✨ A SECRET GRADUATION PACK ✨</div>
+                <div class="instruction-text" id="status-text">CLICK TO OPEN...</div>
+                <div class="tap-progress-bar">
+                    <div class="tap-progress-fill" id="tap-progress"></div>
+                </div>
+            </div>
+
+            <!-- Khung danh sách Card Pool Gacha với hệ thống mở khóa -->
+            <div class="card-pool-container">
+                <div class="pool-title" id="pool-title">✨ BỘ SƯU TẬP THẺ (<span id="unlocked-count">0</span>/6) ✨</div>
+
+                <!-- Hàng 1: 4 Thẻ Common & Rare -->
+                <div class="pool-row-common-rare">
+                    <div class="pool-item" data-card-id="common1">
+                        <div class="pool-card-border common-border blurred" id="border-common1">
+                            <img src="grad/common1.jpg" alt="Gấu bông" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-common1">???</div>
+                    </div>
+                    <div class="pool-item" data-card-id="common2">
+                        <div class="pool-card-border common-border blurred" id="border-common2">
+                            <img src="grad/common2.jpg" alt="Bó hoa" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-common2">???</div>
+                    </div>
+                    <div class="pool-item" data-card-id="rare1">
+                        <div class="pool-card-border rare-border blurred" id="border-rare1">
+                            <img src="grad/rare1.jpg" alt="Bia hơi" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-rare1">???</div>
+                    </div>
+                    <div class="pool-item" data-card-id="rare2">
+                        <div class="pool-card-border rare-border blurred" id="border-rare2">
+                            <img src="grad/rare2.jpg" alt="Bó hoa nem chua" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-rare2">???</div>
+                    </div>
+                </div>
+
+                <!-- Hàng 2: 2 Thẻ Super Rare & Special -->
+                <div class="pool-row-sr-special">
+                    <div class="pool-item" data-card-id="superrare">
+                        <div class="pool-card-border sr-border blurred" id="border-superrare">
+                            <img src="grad/superrare.jpg" alt="Cút kít" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-superrare">???</div>
+                    </div>
+                    <div class="pool-item" data-card-id="special">
+                        <div class="pool-card-border special-border blurred" id="border-special">
+                            <img src="grad/special.jpg" alt="Xe lăn" class="pool-card-image">
+                            <div class="pool-question-mark">?</div>
+                        </div>
+                        <div class="pool-badge locked" id="badge-special">???</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= GIAI ĐOẠN 3: RARE PHOTOCARD 3D FLIP STAGE ================= -->
+        <div class="card-stage-wrapper" id="card-stage" style="display: none;">
+            <div class="card" id="invite-card">
+                <div class="card-inner" id="card-inner-box">
+
+                    <!-- 1. MẶT TRƯỚC: RARE PHOTOCARD -->
+                    <div class="card-front" id="card-front-side">
+                        <div class="photocard-border">
+                            <!-- Hiệu ứng bóng Hologram lấp lánh xanh & vàng -->
+                            <div class="hologram-overlay"></div>
+                            <div class="photocard-image-container">
+                                <img src="grad/special.jpg" alt="Photocard" class="photocard-image">
+                            </div>
+
+                            <!-- Nhãn thẻ hiếm -->
+                            <div class="photocard-footer">
+                                <span class="rarity-badge">👑 SPECIAL CARD 👑</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. MẶT SAU: THIỆP MỜI TỐT NGHIỆP CAO CẤP -->
+                    <div class="card-back">
+                        <div class="pixel-border-back">
+                            <!-- Header Thiệp -->
+                            <div class="invitation-header">
+                                <span class="header-sparkle">★</span>
+                                <h1>🎓 Graduation Invitation</h1>
+                                <span class="header-sparkle">★</span>
+                            </div>
+
+                            <!-- Lời nhắn cử nhân (Random 1 trong 5 quotes) -->
+                            <div class="hero-pixel-box">
+                                <div class="hero-text" id="hero-quote">
+                                    Hành trình 4 năm khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và chụp cùng mình vài kiểu ảnh kỷ niệm nhé! 🎓✨
+                                </div>
+                            </div>
+
+                            <!-- Chi tiết buổi lễ -->
+                            <div class="invitation-details">
+                                <div class="detail-row header-row">
+                                    <span class="star-gold">★</span> NEU GRADUATION CEREMONY <span class="star-gold">★</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <div class="row-title">🎓 CỬ NHÂN</div>
+                                    <div class="row-value bold-blue">Võ Khánh Huy • Class of 2026</div>
+                                </div>
+
+                                <div class="detail-row">
+                                    <div class="row-title">📅 THỜI GIAN</div>
+                                    <div class="row-value color-black">14:00 • Thứ Năm, 27/08/2026</div>
+                                </div>
+
+                                <div class="detail-row">
+                                    <div class="row-title">📍 ĐỊA ĐIỂM</div>
+                                    <div class="row-value font-wrap">
+                                        Hội trường A2 - Toà nhà A2, Trường Đại học Kinh tế Quốc Dân
+                                    </div>
+                                </div>
+
+                                <div class="detail-row">
+                                    <div class="row-title">📞 LIÊN HỆ</div>
+                                    <div class="row-value select-text">SĐT: 0978827541</div>
+                                </div>
+                            </div>
+
+                            <!-- Nút tương tác -->
+                            <div class="card-back-actions">
+                                <a href="https://maps.app.goo.gl/8CaY9J8XCd59JqZf9" target="_blank" class="action-btn btn-map" onclick="event.stopPropagation()">
+                                    🗺️ Mở Bản Đồ
+                                </a>
+                                <button class="action-btn btn-flip" onclick="event.stopPropagation(); flipCard();">
+                                    🔄 Xem Thẻ Ảnh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= NÚT ĐIỀU KHIỂN ÂM THANH ================= -->
+        <button class="music-toggle" id="music-btn" aria-label="Toggle Sound">
+            <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="7" cy="17" rx="3" ry="2" fill="#0284C7" />
+                <rect x="9.5" y="8" width="2" height="9" fill="#0284C7" />
+                <ellipse cx="17" cy="14" rx="3" ry="2" fill="#0284C7" />
+                <rect x="19.5" y="5" width="2" height="9" fill="#0284C7" />
+                <rect x="9.5" y="8" width="12" height="2" fill="#0284C7" />
+                <line id="mute-slash" x1="3" y1="3" x2="21" y2="21" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" style="display: block;" />
+            </svg>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
