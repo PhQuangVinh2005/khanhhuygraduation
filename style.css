@@ -548,6 +548,226 @@ body {
 }
 
 /* ==========================================================================
+   MINI-GAME 1 & 2: BẮT MŨ TỐT NGHIỆP & VÒNG QUAY MAY MẮN
+   ========================================================================== */
+
+.game-stage-wrapper {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    padding: 24px 16px;
+}
+
+.game-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #F0F9FF;
+    text-shadow: 0 0 14px rgba(56, 189, 248, 0.7);
+    text-align: center;
+}
+
+.game-instruction {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #BAE6FD;
+    text-align: center;
+    max-width: 300px;
+    line-height: 1.4;
+}
+
+.game-action-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10.5px;
+    color: #0B192C;
+    background: linear-gradient(135deg, #FEF08A, #F59E0B);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45), 0 0 0 2px rgba(255, 255, 255, 0.25) inset;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    animation: pulse 1.8s infinite ease-in-out;
+}
+
+.game-action-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+.game-action-btn:active {
+    transform: translateY(1px) scale(0.97);
+}
+
+.game-action-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+    animation: none;
+}
+
+.game-result {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    animation: resultPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.game-result.show {
+    display: flex;
+}
+
+@keyframes resultPop {
+    0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.game-result-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FEF08A;
+    text-align: center;
+    max-width: 300px;
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+
+.game-skip-link {
+    background: none;
+    border: none;
+    color: rgba(186, 230, 253, 0.55);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 4px;
+}
+
+.game-skip-link:hover {
+    color: rgba(186, 230, 253, 0.9);
+}
+
+/* --- Khu vực hứng mũ tốt nghiệp rơi --- */
+.catch-play-area {
+    position: relative;
+    isolation: isolate;
+    width: 280px;
+    height: 340px;
+    max-width: 90vw;
+    background: rgba(10, 25, 47, 0.55);
+    border: 2px solid rgba(56, 189, 248, 0.4);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(2, 132, 199, 0.3);
+}
+
+.catch-score-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 5;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #FEF08A;
+    background: rgba(2, 132, 199, 0.55);
+    border: 1px solid rgba(250, 204, 21, 0.5);
+    padding: 5px 10px;
+    border-radius: 14px;
+}
+
+.falling-item {
+    position: absolute;
+    top: -36px;
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+    animation-name: fallDown;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+    z-index: 2;
+}
+
+.falling-item.caught {
+    animation: catchPop 0.25s ease-out forwards !important;
+    pointer-events: none;
+}
+
+@keyframes fallDown {
+    from { transform: translateY(0) rotate(0deg); }
+    to { transform: translateY(376px) rotate(45deg); }
+}
+
+@keyframes catchPop {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* --- Vòng quay may mắn --- */
+.wheel-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    max-width: 80vw;
+    max-height: 80vw;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    color: #FEF08A;
+    z-index: 6;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
+}
+
+.wheel-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    border: 6px solid #FEF08A;
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.55), inset 0 0 25px rgba(0, 0, 0, 0.35);
+    background: conic-gradient(#0EA5E9 0deg 60deg, #F59E0B 60deg 120deg, #38BDF8 120deg 180deg, #FBBF24 180deg 240deg, #0284C7 240deg 300deg, #FCD34D 300deg 360deg);
+    transition: transform 4s cubic-bezier(0.12, 0.85, 0.15, 1);
+}
+
+.wheel-disc::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    background: radial-gradient(circle, #FFFFFF, #FEF08A);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.wheel-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    margin-left: -32px;
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #0B192C;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform-origin: 50% 0;
+}
+
+/* ==========================================================================
    GIAI ĐOẠN 3: RARE PHOTOCARD & 3D FLIP INVITATION
    ========================================================================== */
 
@@ -578,6 +798,55 @@ body {
     transition: transform 0.9s cubic-bezier(0.4, 0.2, 0.2, 1);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 165, 233, 0.4);
     border-radius: 20px;
+}
+
+/* Hào quang cầu vồng xoay quanh viền thẻ, bừng sáng mạnh hơn khi nghiêng thẻ */
+.card-inner::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 24px;
+    background: conic-gradient(from 0deg, #ff5f6d, #ffc371, #4ade80, #38bdf8, #a855f7, #ff5f6d);
+    filter: blur(16px);
+    z-index: -1;
+    opacity: calc(0.35 + var(--tilt, 0) * 0.65);
+    animation: foilSpin 6s linear infinite;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+@keyframes foilSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Lớp ánh kim holographic đi theo con trỏ / góc nghiêng thẻ (giống thẻ bài foil thật) */
+.card-foil-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.7), transparent 45%),
+        linear-gradient(115deg,
+            transparent 12%,
+            rgba(255, 80, 160, 0.55) 26%,
+            rgba(255, 221, 87, 0.55) 40%,
+            rgba(96, 255, 200, 0.55) 54%,
+            rgba(140, 90, 255, 0.55) 68%,
+            transparent 84%);
+    background-size: 200% 200%, 260% 260%;
+    background-position: var(--mx, 50%) var(--my, 50%), calc(100% - var(--mx, 50%)) calc(100% - var(--my, 50%));
+    transition: opacity 0.25s ease;
+}
+
+.card-front .card-foil-layer {
+    mix-blend-mode: color-dodge;
+    opacity: calc(0.1 + var(--tilt, 0) * 0.5);
+}
+
+.card-back .card-foil-layer {
+    mix-blend-mode: multiply;
+    opacity: calc(0.12 + var(--tilt, 0) * 0.38);
 }
 
 .card-inner.is-flipped {
@@ -729,22 +998,6 @@ body {
 .header-sparkle {
     color: #F59E0B;
     font-size: 12px;
-}
-
-.hero-pixel-box {
-    background: #E0F2FE;
-    border-left: 3px solid #0284C7;
-    padding: 8px 10px;
-    border-radius: 6px;
-    margin: 4px 0;
-}
-
-.hero-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #075985;
-    line-height: 1.35;
 }
 
 .invitation-details {
