@@ -29,37 +29,43 @@
             <div class="congrats-subtitle">You found a Graduation Card!</div>
         </div>
 
-        <!-- ================= MINI-GAME 1/3: BẮT MŨ TỐT NGHIỆP ================= -->
-        <div class="game-stage-wrapper" id="game-catch-stage">
+        <!-- ================= MINI-GAME 1/3: LẬT ĐỒNG XU ĐỊNH MỆNH ================= -->
+        <div class="game-stage-wrapper" id="game-coin-stage">
             <div class="top-header-badge"><span class="star-icon">★</span> MINI-GAME 1/3 <span class="star-icon">★</span></div>
-            <div class="game-title">🎓 HỨNG MŨ TỐT NGHIỆP! 🎓</div>
-            <div class="game-instruction">Chạm vào mũ & sao rơi trong 12 giây để tích điểm may mắn — điểm càng cao, tỉ lệ ra thẻ hiếm càng lớn!</div>
+            <div class="game-title">🪙 LẬT ĐỒNG XU ĐỊNH MỆNH 🪙</div>
+            <div class="game-instruction">Ra Mũ: may mắn mỉm cười, được vào Vòng Quay Đặc Biệt. Ra Xe Lăn: cút, load lại trang chơi lại từ đầu nha! 😆</div>
 
-            <div class="catch-play-area" id="catch-play-area">
-                <div class="catch-score-badge">✨ Điểm: <span id="catch-score">0</span></div>
+            <div class="coin-arena" id="coin-arena">
+                <div class="coin" id="coin">
+                    <div class="coin-face coin-front">
+                        <span class="coin-emoji">🎓</span>
+                        <span class="coin-face-label">MŨ TỐT NGHIỆP</span>
+                    </div>
+                    <div class="coin-face coin-back">
+                        <span class="coin-emoji">🦽</span>
+                        <span class="coin-face-label">XE LĂN</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="tap-progress-bar" id="catch-timer-bar">
-                <div class="tap-progress-fill" id="catch-timer-fill"></div>
-            </div>
+            <button class="game-action-btn" id="coin-flip-btn">🪙 LẬT ĐI</button>
 
-            <button class="game-action-btn" id="catch-start-btn">▶ BẮT ĐẦU</button>
-
-            <div class="game-result" id="catch-result">
-                <div class="game-result-text" id="catch-result-text"></div>
-                <button class="game-action-btn" id="catch-next-btn">TIẾP THEO →</button>
+            <div class="game-result" id="coin-result">
+                <div class="game-result-text" id="coin-result-text"></div>
+                <button class="game-action-btn" id="coin-next-btn" style="display: none;">TIẾP THEO →</button>
             </div>
 
             <button class="game-skip-link" id="skip-games-btn">Bỏ qua trò chơi »</button>
         </div>
 
-        <!-- ================= MINI-GAME 2/3: VÒNG QUAY MAY MẮN ================= -->
+        <!-- ================= MINI-GAME 2/3: VÒNG QUAY ĐẶC BIỆT ================= -->
         <div class="game-stage-wrapper" id="game-wheel-stage" style="display: none;">
             <div class="top-header-badge"><span class="star-icon">★</span> MINI-GAME 2/3 <span class="star-icon">★</span></div>
-            <div class="game-title">🎡 VÒNG QUAY MAY MẮN 🎡</div>
-            <div class="game-instruction">Bấm QUAY để cộng thêm may mắn trước khi mở túi mù!</div>
+            <div class="game-title">🎡 VÒNG QUAY ĐẶC BIỆT 🎡</div>
+            <div class="game-instruction">Bấm QUAY để nhận thêm chút may mắn trước khi mở túi mù!</div>
 
             <div class="wheel-container">
+                <div class="wheel-glow-ring"></div>
                 <div class="wheel-pointer">▼</div>
                 <div class="wheel-disc" id="wheel-disc"></div>
             </div>

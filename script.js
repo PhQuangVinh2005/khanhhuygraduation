@@ -31,15 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardImage = inviteCard.querySelector('.photocard-image');
     const rarityBadge = inviteCard.querySelector('.rarity-badge');
 
-    // DOM Mini-game 1: Bắt mũ tốt nghiệp
-    const catchStage = document.getElementById('game-catch-stage');
-    const catchPlayArea = document.getElementById('catch-play-area');
-    const catchScoreEl = document.getElementById('catch-score');
-    const catchTimerFill = document.getElementById('catch-timer-fill');
-    const catchStartBtn = document.getElementById('catch-start-btn');
-    const catchResult = document.getElementById('catch-result');
-    const catchResultText = document.getElementById('catch-result-text');
-    const catchNextBtn = document.getElementById('catch-next-btn');
+    // DOM Mini-game 1: Lật đồng xu định mệnh
+    const coinStage = document.getElementById('game-coin-stage');
+    const coinArena = document.getElementById('coin-arena');
+    const coinEl = document.getElementById('coin');
+    const coinFlipBtn = document.getElementById('coin-flip-btn');
+    const coinResult = document.getElementById('coin-result');
+    const coinResultText = document.getElementById('coin-result-text');
+    const coinNextBtn = document.getElementById('coin-next-btn');
     const skipGamesBtn = document.getElementById('skip-games-btn');
 
     // DOM Mini-game 2: Vòng quay may mắn
@@ -502,18 +501,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------------------------
-    // 4.5. MINI-GAME 1: BẮT MŨ TỐT NGHIỆP RƠI (Catch Game)
+    // 4.5. MINI-GAME 1: LẬT ĐỒNG XU ĐỊNH MỆNH (Coin Flip Gamble)
     // ----------------------------------------------------------------------
-    const CATCH_DURATION = 12000; // 12 giây
-    const CATCH_SPAWN_INTERVAL = 450;
-    const CATCH_ITEMS = ['🎓', '⭐', '✨', '💫'];
+    let coinRotation = 0;
+    let coinFlipping = false;
 
-    let catchScore = 0;
-    let catchActive = false;
-    let catchSpawnTimer = null;
-    let catchEndTimer = null;
-
-    function appPointFromRect(rect) {
+    function coinArenaCenter() {
+        const rect = coinArena.getBoundingClientRect();
         const appRect = appContainer.getBoundingClientRect();
         return {
             x: rect.left + rect.width / 2 - appRect.left,
@@ -521,95 +515,73 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    function spawnFallingItem() {
-        if (!catchActive) return;
-        const el = document.createElement('div');
-        el.className = 'falling-item';
-        el.textContent = CATCH_ITEMS[Math.floor(Math.random() * CATCH_ITEMS.length)];
-        el.style.left = (6 + Math.random() * 84) + '%';
-        const duration = 2200 + Math.random() * 1400;
-        el.style.animationDuration = duration + 'ms';
-
-        const catchHandler = () => catchItem(el);
-        el.addEventListener('click', catchHandler);
-        el.addEventListener('touchstart', (e) => { e.preventDefault(); catchHandler(); }, { passive: false });
-
-        catchPlayArea.appendChild(el);
-        setTimeout(() => { if (el.parentNode) el.remove(); }, duration + 60);
-    }
-
-    function catchItem(el) {
-        if (!catchActive || el.dataset.caught) return;
-        el.dataset.caught = '1';
-        catchScore++;
-        catchScoreEl.innerText = catchScore;
-
-        const point = appPointFromRect(el.getBoundingClientRect());
-        createTapSparks(point.x, point.y);
-        playTearSound(1.5 + Math.random() * 0.5);
-
-        el.classList.add('caught');
-        setTimeout(() => el.remove(), 250);
-    }
-
-    function startCatchGame() {
-        catchScore = 0;
-        catchActive = true;
-        catchScoreEl.innerText = '0';
-        catchStartBtn.style.display = 'none';
-        skipGamesBtn.style.display = 'none';
+    function flipCoin() {
+        if (coinFlipping) return;
+        coinFlipping = true;
+        coinFlipBtn.disabled = true;
 
         if (!musicPlaying) startBGM();
 
-        catchTimerFill.style.transition = 'none';
-        catchTimerFill.style.width = '100%';
-        void catchTimerFill.offsetWidth; // Trigger reflow
-        catchTimerFill.style.transition = `width ${CATCH_DURATION}ms linear`;
-        catchTimerFill.style.width = '0%';
+        const win = Math.random() < 0.5;
+        const currentMod = ((coinRotation % 360) + 360) % 360;
+        const desiredMod = win ? 0 : 180;
+        let diff = desiredMod - currentMod;
+        if (diff <= 0) diff += 360;
+        coinRotation += 2160 + diff; // 6 vòng xoay trọn + góc cần thiết để dừng đúng mặt
 
-        catchSpawnTimer = setInterval(spawnFallingItem, CATCH_SPAWN_INTERVAL);
-        catchEndTimer = setTimeout(endCatchGame, CATCH_DURATION);
+        coinArena.classList.remove('tossing');
+        void coinArena.offsetWidth; // Trigger reflow để chạy lại animation tung xu
+        coinArena.classList.add('tossing');
+        coinEl.style.transform = `rotateY(${coinRotation}deg)`;
+
+        const center = coinArenaCenter();
+        createTapSparks(center.x, center.y);
+        playTearSound(1.3);
+
+        setTimeout(() => {
+            coinFlipping = false;
+            coinArena.classList.remove('tossing');
+            coinFlipBtn.style.display = 'none';
+
+            const landPoint = coinArenaCenter();
+            createTapSparks(landPoint.x, landPoint.y);
+
+            if (win) {
+                playVictoryChime();
+                createGrandCelebration();
+                coinResultText.innerText = '🎉 NGỬA! May mắn mỉm cười — mời bạn vào Vòng Quay Đặc Biệt!';
+                coinNextBtn.style.display = 'inline-block';
+            } else {
+                coinResultText.innerText = 'Sấp! Nhót...';
+            }
+            coinResult.classList.add('show');
+        }, 1850);
     }
 
-    function endCatchGame() {
-        catchActive = false;
-        clearInterval(catchSpawnTimer);
-        clearTimeout(catchEndTimer);
-        catchPlayArea.querySelectorAll('.falling-item').forEach(el => el.remove());
+    coinFlipBtn.addEventListener('click', flipCoin);
 
-        const catchLuck = Math.min(catchScore * 1.5, 20);
-        luckBonus += catchLuck;
-
-        catchResultText.innerText = `🎉 Bạn hứng được ${catchScore} vật phẩm may mắn! (+${catchLuck.toFixed(0)}% may mắn)`;
-        catchResult.classList.add('show');
-    }
-
-    catchStartBtn.addEventListener('click', startCatchGame);
-
-    catchNextBtn.addEventListener('click', () => {
-        catchStage.style.display = 'none';
+    coinNextBtn.addEventListener('click', () => {
+        coinStage.style.display = 'none';
         wheelStage.style.display = 'flex';
     });
 
     skipGamesBtn.addEventListener('click', () => {
-        clearInterval(catchSpawnTimer);
-        clearTimeout(catchEndTimer);
-        catchActive = false;
-        catchStage.style.display = 'none';
+        coinFlipping = false;
+        coinStage.style.display = 'none';
         wheelStage.style.display = 'none';
         bagStage.style.display = 'flex';
     });
 
     // ----------------------------------------------------------------------
-    // 4.6. MINI-GAME 2: VÒNG QUAY MAY MẮN (Lucky Wheel)
+    // 4.6. MINI-GAME 2: VÒNG QUAY ĐẶC BIỆT (Special Lucky Wheel)
     // ----------------------------------------------------------------------
     const WHEEL_SEGMENTS = [
-        { label: '+5%', bonus: 5 },
-        { label: '+10%', bonus: 10 },
-        { label: 'ẢO DIỆU', bonus: 8 },
-        { label: '+15%', bonus: 15 },
-        { label: 'MAY MẮN', bonus: 12 },
-        { label: 'JACKPOT!', bonus: 30 }
+        { label: '+2%', bonus: 2 },
+        { label: '+4%', bonus: 4 },
+        { label: 'ẢO DIỆU', bonus: 3 },
+        { label: '+6%', bonus: 6 },
+        { label: 'MAY MẮN', bonus: 5 },
+        { label: 'JACKPOT!', bonus: 8 }
     ];
 
     // Vẽ nhãn chữ cho từng ô của vòng quay
