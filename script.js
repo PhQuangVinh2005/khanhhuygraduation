@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const photocardName = document.getElementById('photocard-name');
     const heroQuote = document.getElementById('hero-quote');
 
+    // Nạp ảnh qua JS khi vào trang để tránh các bot crawler (Facebook, Messenger, Discord, Zalo) cào ảnh làm lộ bí mật túi mù
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        img.src = img.getAttribute('data-src');
+    });
+
     // Danh sách 5 lời nhắn mời dự lễ tốt nghiệp ngẫu nhiên
     const GRADUATION_QUOTES = [
         "Hành trình thanh xuân đại học khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và cùng chụp vài kiểu ảnh kỷ niệm nhé! 🎓✨",
@@ -50,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     applyRandomQuote();
 
-    // Cấu hình Card Pool 4 bậc: Common (50%), Rare (25%), Super Rare (15%), Special (10%)
+    // Cấu hình Card Pool 4 bậc: Common (40%), Rare (30%), Super Rare (20%), Special (10%)
     const cardPool = {
         common: [
             { id: 'common1', src: 'grad/common1.jpg', name: 'Gấu bông', rarity: '★ COMMON CARD ★', tier: 'common' },
@@ -153,13 +158,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function rollGacha() {
         const rand = Math.random();
         if (rand < 0.10) {
+            // Special: 10% (0.00 -> 0.10)
             rolledCard = cardPool.special[0];
-        } else if (rand < 0.25) {
+        } else if (rand < 0.30) {
+            // Super Rare: 20% (0.10 -> 0.30)
             rolledCard = cardPool.superRare[0];
-        } else if (rand < 0.50) {
+        } else if (rand < 0.60) {
+            // Rare: 30% (0.30 -> 0.60)
             const rareIndex = Math.random() < 0.5 ? 0 : 1;
             rolledCard = cardPool.rare[rareIndex];
         } else {
+            // Common: 40% (0.60 -> 1.00)
             const commonIndex = Math.random() < 0.5 ? 0 : 1;
             rolledCard = cardPool.common[commonIndex];
         }
@@ -1025,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!bgmAudio) {
             bgmAudio = new Audio();
             bgmAudio.preload = 'auto';
-            bgmAudio.volume = 0.75;
+            bgmAudio.volume = 0.35; // Giảm âm lượng nhạc nền 50% cho êm dịu
 
             // Chọn ngẫu nhiên 1 trong 4 bài
             currentSong = GRAD_MUSIC_PLAYLIST[Math.floor(Math.random() * GRAD_MUSIC_PLAYLIST.length)];

@@ -927,16 +927,25 @@ body {
 }
 
 .detail-row.header-row {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7.5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
     color: #0284C7;
     text-align: center;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     margin-bottom: 2px;
-    letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .star-gold {
     color: #F59E0B;
+    font-size: 11px;
 }
 
 .detail-row {
