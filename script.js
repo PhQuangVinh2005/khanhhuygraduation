@@ -33,11 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const photocardName = document.getElementById('photocard-name');
     const heroQuote = document.getElementById('hero-quote');
 
-    // Nạp ảnh qua JS khi vào trang để tránh các bot crawler (Facebook, Messenger, Discord, Zalo) cào ảnh làm lộ bí mật túi mù
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        img.src = img.getAttribute('data-src');
-    });
-
     // Danh sách 5 lời nhắn mời dự lễ tốt nghiệp ngẫu nhiên
     const GRADUATION_QUOTES = [
         "Hành trình thanh xuân đại học khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và cùng chụp vài kiểu ảnh kỷ niệm nhé! 🎓✨",
