@@ -29,8 +29,57 @@
             <div class="congrats-subtitle">You found a Graduation Card!</div>
         </div>
 
-        <!-- ================= GIAI ĐOẠN 1 & 2: TÚI MÙ SECRET BLIND BAG ================= -->
-        <div class="bag-stage-wrapper" id="bag-stage">
+        <!-- ================= MINI-GAME 1/3: LẬT ĐỒNG XU ĐỊNH MỆNH ================= -->
+        <div class="game-stage-wrapper" id="game-coin-stage">
+            <div class="top-header-badge"><span class="star-icon">★</span> MINI-GAME 1/3 <span class="star-icon">★</span></div>
+            <div class="game-title">🪙 LẬT ĐỒNG XU ĐỊNH MỆNH 🪙</div>
+            <div class="game-instruction">Ra Mũ: may mắn mỉm cười, được vào Vòng Quay Đặc Biệt. Ra Xe Lăn: cút, load lại trang chơi lại từ đầu nha! 😆</div>
+
+            <div class="coin-arena" id="coin-arena">
+                <div class="coin" id="coin">
+                    <div class="coin-face coin-front">
+                        <span class="coin-emoji">🎓</span>
+                        <span class="coin-face-label">MŨ TỐT NGHIỆP</span>
+                    </div>
+                    <div class="coin-face coin-back">
+                        <span class="coin-emoji">🦽</span>
+                        <span class="coin-face-label">XE LĂN</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="game-action-btn" id="coin-flip-btn">🪙 LẬT ĐI</button>
+
+            <div class="game-result" id="coin-result">
+                <div class="game-result-text" id="coin-result-text"></div>
+                <button class="game-action-btn" id="coin-next-btn" style="display: none;">TIẾP THEO →</button>
+            </div>
+
+            <button class="game-skip-link" id="skip-games-btn">Bỏ qua trò chơi »</button>
+        </div>
+
+        <!-- ================= MINI-GAME 2/3: VÒNG QUAY ĐẶC BIỆT ================= -->
+        <div class="game-stage-wrapper" id="game-wheel-stage" style="display: none;">
+            <div class="top-header-badge"><span class="star-icon">★</span> MINI-GAME 2/3 <span class="star-icon">★</span></div>
+            <div class="game-title">🎡 VÒNG QUAY ĐẶC BIỆT 🎡</div>
+            <div class="game-instruction">Bấm QUAY để nhận thêm chút may mắn trước khi mở túi mù!</div>
+
+            <div class="wheel-container">
+                <div class="wheel-glow-ring"></div>
+                <div class="wheel-pointer">▼</div>
+                <div class="wheel-disc" id="wheel-disc"></div>
+            </div>
+
+            <button class="game-action-btn" id="wheel-spin-btn">🎡 QUAY NGAY</button>
+
+            <div class="game-result" id="wheel-result">
+                <div class="game-result-text" id="wheel-result-text"></div>
+                <button class="game-action-btn" id="wheel-next-btn">MỞ TÚI MÙ →</button>
+            </div>
+        </div>
+
+        <!-- ================= GIAI ĐOẠN 3: TÚI MÙ SECRET BLIND BAG ================= -->
+        <div class="bag-stage-wrapper" id="bag-stage" style="display: none;">
             <!-- Header nhỏ trên túi -->
             <div class="top-header-badge">
                 <span class="star-icon">★</span> NEU CLASS OF 2026 <span class="star-icon">★</span>
@@ -259,6 +308,9 @@
                             <div class="photocard-footer">
                                 <span class="rarity-badge">👑 SPECIAL CARD 👑</span>
                             </div>
+
+                            <!-- Lớp ánh kim holographic phản ứng theo góc nghiêng -->
+                            <div class="card-foil-layer"></div>
                         </div>
                     </div>
 
@@ -270,13 +322,6 @@
                                 <span class="header-sparkle">★</span>
                                 <h1>🎓 Graduation Invitation</h1>
                                 <span class="header-sparkle">★</span>
-                            </div>
-
-                            <!-- Lời nhắn cử nhân (Random 1 trong 5 quotes) -->
-                            <div class="hero-pixel-box">
-                                <div class="hero-text" id="hero-quote">
-                                    Hành trình 4 năm khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và chụp cùng mình vài kiểu ảnh kỷ niệm nhé! 🎓✨
-                                </div>
                             </div>
 
                             <!-- Chi tiết buổi lễ -->
@@ -317,6 +362,9 @@
                                     🔄 Xem Thẻ Ảnh
                                 </button>
                             </div>
+
+                            <!-- Lớp ánh kim holographic phản ứng theo góc nghiêng -->
+                            <div class="card-foil-layer"></div>
                         </div>
                     </div>
 

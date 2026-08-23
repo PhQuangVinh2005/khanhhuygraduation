@@ -30,24 +30,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cardImage = inviteCard.querySelector('.photocard-image');
     const rarityBadge = inviteCard.querySelector('.rarity-badge');
-    const heroQuote = document.getElementById('hero-quote');
 
-    // Danh sách 5 lời nhắn mời dự lễ tốt nghiệp ngẫu nhiên
-    const GRADUATION_QUOTES = [
-        "Hành trình thanh xuân đại học khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và cùng chụp vài kiểu ảnh kỷ niệm nhé! 🎓✨",
-        "Thời khắc nhận bằng tốt nghiệp sẽ trọn vẹn và ý nghĩa hơn rất nhiều nếu có sự hiện diện của bạn. Hẹn gặp bạn tại NEU ngày 27/08 này nhé! 📸✨",
-        "Thanh xuân rực rỡ tại giảng đường đã đến ngày gặt hái quả ngọt! Sự có mặt và nụ cười của bạn là món quà ý nghĩa nhất đối với mình. ✨🎓",
-        "Cảm ơn vì đã luôn là một phần thật đẹp trong những năm tháng thanh xuân của mình. Hãy đến chia vui và lưu giữ khoảnh khắc này cùng mình nhé! 🌟🎓",
-        "Sau bao đêm chạy deadline và đồ án, ngày trọng đại này cuối cùng cũng tới! Rất mong được gặp bạn tại lễ tốt nghiệp để cùng ăn mừng cột mốc mới nhé! 🎉🎓"
-    ];
+    // DOM Mini-game 1: Lật đồng xu định mệnh
+    const coinStage = document.getElementById('game-coin-stage');
+    const coinArena = document.getElementById('coin-arena');
+    const coinEl = document.getElementById('coin');
+    const coinFlipBtn = document.getElementById('coin-flip-btn');
+    const coinResult = document.getElementById('coin-result');
+    const coinResultText = document.getElementById('coin-result-text');
+    const coinNextBtn = document.getElementById('coin-next-btn');
+    const skipGamesBtn = document.getElementById('skip-games-btn');
 
-    function applyRandomQuote() {
-        if (heroQuote) {
-            const randomQuote = GRADUATION_QUOTES[Math.floor(Math.random() * GRADUATION_QUOTES.length)];
-            heroQuote.innerText = randomQuote;
-        }
-    }
-    applyRandomQuote();
+    // DOM Mini-game 2: Vòng quay may mắn
+    const wheelStage = document.getElementById('game-wheel-stage');
+    const wheelDisc = document.getElementById('wheel-disc');
+    const wheelSpinBtn = document.getElementById('wheel-spin-btn');
+    const wheelResult = document.getElementById('wheel-result');
+    const wheelResultText = document.getElementById('wheel-result-text');
+    const wheelNextBtn = document.getElementById('wheel-next-btn');
 
     // Cấu hình Card Pool 4 bậc: Common (50%), Rare (25%), Super Rare (15%), Special (10%)
     const cardPool = {
@@ -150,26 +150,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cập nhật UI bộ sưu tập ban đầu
     updateCollectionUI();
 
+    // Tổng % may mắn tích lũy được từ 2 mini-game (Bắt mũ + Vòng quay) trước khi mở túi mù
+    let luckBonus = 0;
+
     let rolledCard = null;
     function rollGacha() {
+        // luckBonus dịch chuyển xác suất từ Common sang Rare/SR/Special, tối đa dịch 45 điểm %
+        const shift = Math.min(luckBonus, 45) / 100;
+        const specialP = 0.10 + shift * 0.5;
+        const srP = 0.15 + shift * 0.3;
+        const rareP = 0.25 + shift * 0.2;
+
         const rand = Math.random(); // Giá trị ngẫu nhiên từ 0 -> 1
-        if (rand < 0.10) {
-            // 10%: Special (Xe lăn)
+        if (rand < specialP) {
+            // Special (Xe lăn)
             rolledCard = cardPool.special[0];
-        } else if (rand < 0.25) {
-            // 15%: Super Rare (Cút kít)
+        } else if (rand < specialP + srP) {
+            // Super Rare (Cút kít)
             rolledCard = cardPool.superRare[0];
-        } else if (rand < 0.50) {
-            // 25%: Rare (Bia hơi, Bó hoa nem chua - 12.5% mỗi thẻ)
+        } else if (rand < specialP + srP + rareP) {
+            // Rare (Bia hơi, Bó hoa nem chua)
             const rareIndex = Math.random() < 0.5 ? 0 : 1;
             rolledCard = cardPool.rare[rareIndex];
         } else {
-            // 50%: Common (Gấu bông, Bó hoa - 25% mỗi thẻ)
+            // Common (Gấu bông, Bó hoa)
             const commonIndex = Math.random() < 0.5 ? 0 : 1;
             rolledCard = cardPool.common[commonIndex];
         }
     }
-    rollGacha();
 
     let clickCount = 0;
     const maxClicks = 5;
@@ -493,6 +501,136 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------------------------
+    // 4.5. MINI-GAME 1: LẬT ĐỒNG XU ĐỊNH MỆNH (Coin Flip Gamble)
+    // ----------------------------------------------------------------------
+    let coinRotation = 0;
+    let coinFlipping = false;
+
+    function coinArenaCenter() {
+        const rect = coinArena.getBoundingClientRect();
+        const appRect = appContainer.getBoundingClientRect();
+        return {
+            x: rect.left + rect.width / 2 - appRect.left,
+            y: rect.top + rect.height / 2 - appRect.top
+        };
+    }
+
+    function flipCoin() {
+        if (coinFlipping) return;
+        coinFlipping = true;
+        coinFlipBtn.disabled = true;
+
+        if (!musicPlaying) startBGM();
+
+        const win = Math.random() < 0.5;
+        const currentMod = ((coinRotation % 360) + 360) % 360;
+        const desiredMod = win ? 0 : 180;
+        let diff = desiredMod - currentMod;
+        if (diff <= 0) diff += 360;
+        coinRotation += 2160 + diff; // 6 vòng xoay trọn + góc cần thiết để dừng đúng mặt
+
+        coinArena.classList.remove('tossing');
+        void coinArena.offsetWidth; // Trigger reflow để chạy lại animation tung xu
+        coinArena.classList.add('tossing');
+        coinEl.style.transform = `rotateY(${coinRotation}deg)`;
+
+        const center = coinArenaCenter();
+        createTapSparks(center.x, center.y);
+        playTearSound(1.3);
+
+        setTimeout(() => {
+            coinFlipping = false;
+            coinArena.classList.remove('tossing');
+            coinFlipBtn.style.display = 'none';
+
+            const landPoint = coinArenaCenter();
+            createTapSparks(landPoint.x, landPoint.y);
+
+            if (win) {
+                playVictoryChime();
+                createGrandCelebration();
+                coinResultText.innerText = '🎉 NGỬA! May mắn mỉm cười — mời bạn vào Vòng Quay Đặc Biệt!';
+                coinNextBtn.style.display = 'inline-block';
+            } else {
+                coinResultText.innerText = 'Sấp! Nhót...';
+            }
+            coinResult.classList.add('show');
+        }, 1850);
+    }
+
+    coinFlipBtn.addEventListener('click', flipCoin);
+
+    coinNextBtn.addEventListener('click', () => {
+        coinStage.style.display = 'none';
+        wheelStage.style.display = 'flex';
+    });
+
+    skipGamesBtn.addEventListener('click', () => {
+        coinFlipping = false;
+        coinStage.style.display = 'none';
+        wheelStage.style.display = 'none';
+        bagStage.style.display = 'flex';
+    });
+
+    // ----------------------------------------------------------------------
+    // 4.6. MINI-GAME 2: VÒNG QUAY ĐẶC BIỆT (Special Lucky Wheel)
+    // ----------------------------------------------------------------------
+    const WHEEL_SEGMENTS = [
+        { label: '+2%', bonus: 2 },
+        { label: '+4%', bonus: 4 },
+        { label: 'ẢO DIỆU', bonus: 3 },
+        { label: '+6%', bonus: 6 },
+        { label: 'MAY MẮN', bonus: 5 },
+        { label: 'JACKPOT!', bonus: 8 }
+    ];
+
+    // Vẽ nhãn chữ cho từng ô của vòng quay
+    WHEEL_SEGMENTS.forEach((seg, i) => {
+        const segAngle = 360 / WHEEL_SEGMENTS.length;
+        const midAngle = i * segAngle + segAngle / 2;
+        const label = document.createElement('span');
+        label.className = 'wheel-label';
+        label.textContent = seg.label;
+        label.style.transform = `rotate(${midAngle}deg) translateY(68px)`;
+        wheelDisc.appendChild(label);
+    });
+
+    let wheelSpun = false;
+    function spinWheel() {
+        if (wheelSpun) return;
+        wheelSpun = true;
+        wheelSpinBtn.disabled = true;
+
+        if (!musicPlaying) startBGM();
+
+        const segIndex = Math.floor(Math.random() * WHEEL_SEGMENTS.length);
+        const segAngle = 360 / WHEEL_SEGMENTS.length;
+        const targetMidAngle = segIndex * segAngle + segAngle / 2;
+        const extraSpins = 5;
+        const finalRotation = 360 * extraSpins + (360 - targetMidAngle);
+
+        wheelDisc.style.transform = `rotate(${finalRotation}deg)`;
+        playTearSound(1.2);
+
+        setTimeout(() => {
+            const seg = WHEEL_SEGMENTS[segIndex];
+            luckBonus += seg.bonus;
+            playVictoryChime();
+            createGrandCelebration();
+            wheelResultText.innerText = `🎉 Bạn quay trúng "${seg.label}"! Tổng may mắn tích lũy: +${luckBonus.toFixed(0)}%`;
+            wheelResult.classList.add('show');
+            wheelSpinBtn.style.display = 'none';
+        }, 4150);
+    }
+
+    wheelSpinBtn.addEventListener('click', spinWheel);
+
+    wheelNextBtn.addEventListener('click', () => {
+        wheelStage.style.display = 'none';
+        bagStage.style.display = 'flex';
+    });
+
+    // ----------------------------------------------------------------------
     // 5. XỬ LÝ TAP XÉ TÚI MÙ (Blind Bag Rip Interaction)
     // ----------------------------------------------------------------------
     const feedbackTexts = [
@@ -557,6 +695,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. XÉ MỞ TÚI & XUẤT HIỆN THẺ RARE PHOTOCARD
     // ----------------------------------------------------------------------
     function tearBagOpen() {
+        // Tung xúc xắc gacha với may mắn tích lũy từ 2 mini-game trước đó
+        rollGacha();
+
         // Tách 2 mảnh túi
         bagTopPiece.classList.add('torn');
         bagBottomPiece.classList.add('torn');
@@ -579,7 +720,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Gán dữ liệu thẻ mở được & Quote ngẫu nhiên
             cardImage.src = rolledCard.src;
             rarityBadge.innerText = rolledCard.rarity;
-            applyRandomQuote();
 
             // Cập nhật class viền mặt trước Photocard theo tier
             const cardFrontSide = document.getElementById('card-front-side');
@@ -648,6 +788,20 @@ document.addEventListener('DOMContentLoaded', () => {
         flipCard();
     });
 
+    // Cập nhật lớp ánh kim holographic (--mx, --my, --tilt) theo vị trí con trỏ / góc nghiêng
+    function updateFoil(rotX, rotY, px, py) {
+        const tilt = Math.min(Math.sqrt(rotX * rotX + rotY * rotY) / 18, 1);
+        inviteCard.style.setProperty('--mx', `${px}%`);
+        inviteCard.style.setProperty('--my', `${py}%`);
+        inviteCard.style.setProperty('--tilt', tilt.toFixed(3));
+    }
+
+    function resetFoil() {
+        inviteCard.style.setProperty('--mx', '50%');
+        inviteCard.style.setProperty('--my', '50%');
+        inviteCard.style.setProperty('--tilt', '0');
+    }
+
     // 3D Tilt theo chuột hoặc con quay hồi chuyển di động
     window.addEventListener('mousemove', (e) => {
         if (!canTilt) return;
@@ -658,16 +812,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const rotX = -(y / rect.height) * 14;
         const rotY = (x / rect.width) * 14;
 
-        if (!isFlipped) {
-            inviteCard.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
-        } else {
-            inviteCard.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
-        }
+        inviteCard.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
+        updateFoil(rotX, rotY, ((e.clientX - rect.left) / rect.width) * 100, ((e.clientY - rect.top) / rect.height) * 100);
     });
 
     window.addEventListener('mouseleave', () => {
         if (!canTilt) return;
         inviteCard.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        resetFoil();
+    });
+
+    // Vuốt ngón tay trên thẻ để nghiêng trên di động (bổ sung cho con quay hồi chuyển)
+    inviteCard.addEventListener('touchmove', (e) => {
+        if (!canTilt || !e.touches.length) return;
+        const touch = e.touches[0];
+        const rect = inviteCard.getBoundingClientRect();
+        const x = touch.clientX - rect.left - rect.width / 2;
+        const y = touch.clientY - rect.top - rect.height / 2;
+
+        const rotX = -(y / rect.height) * 14;
+        const rotY = (x / rect.width) * 14;
+
+        inviteCard.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
+        updateFoil(rotX, rotY, ((touch.clientX - rect.left) / rect.width) * 100, ((touch.clientY - rect.top) / rect.height) * 100);
+    }, { passive: true });
+
+    inviteCard.addEventListener('touchend', () => {
+        if (!canTilt) return;
+        inviteCard.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        resetFoil();
     });
 
     if (window.DeviceOrientationEvent) {
@@ -676,6 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const rotY = Math.min(Math.max(e.gamma / 3, -15), 15);
             const rotX = Math.min(Math.max((e.beta - 45) / 3, -15), 15);
             inviteCard.style.transform = `perspective(1200px) rotateX(${-rotX}deg) rotateY(${rotY}deg)`;
+            updateFoil(rotX, rotY, 50 + rotY * 2, 50 + rotX * 2);
         });
     }
 });
