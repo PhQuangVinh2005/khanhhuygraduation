@@ -7,11 +7,16 @@
     <title>NEU Class of 2026 - Secret Blind Bag Graduation Invitation 🎓</title>
     <!-- Favicon (Tab Icon) -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <link rel="alternate icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <!-- Pixel & Modern Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Three.js 3D WebGL Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -193,6 +198,7 @@
                 <div class="pool-row-common-rare">
                     <div class="pool-item" data-card-id="common1">
                         <div class="pool-card-border common-border blurred" id="border-common1">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/common1.jpg" alt="Gấu bông" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -200,6 +206,7 @@
                     </div>
                     <div class="pool-item" data-card-id="common2">
                         <div class="pool-card-border common-border blurred" id="border-common2">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/common2.jpg" alt="Bó hoa" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -207,6 +214,7 @@
                     </div>
                     <div class="pool-item" data-card-id="rare1">
                         <div class="pool-card-border rare-border blurred" id="border-rare1">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/rare1.jpg" alt="Bia hơi" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -214,6 +222,7 @@
                     </div>
                     <div class="pool-item" data-card-id="rare2">
                         <div class="pool-card-border rare-border blurred" id="border-rare2">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/rare2.jpg" alt="Bó hoa nem chua" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -225,6 +234,7 @@
                 <div class="pool-row-sr-special">
                     <div class="pool-item" data-card-id="superrare">
                         <div class="pool-card-border sr-border blurred" id="border-superrare">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/superrare.jpg" alt="Cút kít" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -232,6 +242,7 @@
                     </div>
                     <div class="pool-item" data-card-id="special">
                         <div class="pool-card-border special-border blurred" id="border-special">
+                            <div class="pool-card-shine"></div>
                             <img src="grad/special.jpg" alt="Xe lăn" class="pool-card-image">
                             <div class="pool-question-mark">?</div>
                         </div>
@@ -243,6 +254,9 @@
 
         <!-- ================= GIAI ĐOẠN 3: RARE PHOTOCARD 3D FLIP STAGE ================= -->
         <div class="card-stage-wrapper" id="card-stage" style="display: none;">
+            <!-- Hào quang Godrays xoay vòng sau thẻ Photocard -->
+            <div class="aura-godrays" id="aura-godrays"></div>
+
             <div class="card" id="invite-card">
                 <div class="card-inner" id="card-inner-box">
 
@@ -255,9 +269,10 @@
                                 <img src="grad/special.jpg" alt="Photocard" class="photocard-image">
                             </div>
 
-                            <!-- Nhãn thẻ hiếm -->
+                            <!-- Nhãn thẻ hiếm & Tên thẻ -->
                             <div class="photocard-footer">
                                 <span class="rarity-badge">👑 SPECIAL CARD 👑</span>
+                                <div class="photocard-name" id="photocard-name">Xe lăn</div>
                             </div>
                         </div>
                     </div>
@@ -275,14 +290,16 @@
                             <!-- Lời nhắn cử nhân (Random 1 trong 5 quotes) -->
                             <div class="hero-pixel-box">
                                 <div class="hero-text" id="hero-quote">
-                                    Hành trình 4 năm khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung vui và chụp cùng mình vài kiểu ảnh kỷ niệm nhé! 🎓✨
+                                    Hành trình 4 năm khép lại với biết bao kỷ niệm đẹp. Rất mong được đón bạn tới chung
+                                    vui và chụp cùng mình vài kiểu ảnh kỷ niệm nhé! 🎓✨
                                 </div>
                             </div>
 
                             <!-- Chi tiết buổi lễ -->
                             <div class="invitation-details">
                                 <div class="detail-row header-row">
-                                    <span class="star-gold">★</span> NEU GRADUATION CEREMONY <span class="star-gold">★</span>
+                                    <span class="star-gold">★</span> NEU GRADUATION CEREMONY <span
+                                        class="star-gold">★</span>
                                 </div>
 
                                 <div class="detail-row">
@@ -292,7 +309,7 @@
 
                                 <div class="detail-row">
                                     <div class="row-title">📅 THỜI GIAN</div>
-                                    <div class="row-value color-black">14:00 • Thứ Năm, 27/08/2026</div>
+                                    <div class="row-value color-black">11:00 - 13h30 • Thứ Năm, 27/08/2026</div>
                                 </div>
 
                                 <div class="detail-row">
@@ -310,7 +327,8 @@
 
                             <!-- Nút tương tác -->
                             <div class="card-back-actions">
-                                <a href="https://maps.app.goo.gl/8CaY9J8XCd59JqZf9" target="_blank" class="action-btn btn-map" onclick="event.stopPropagation()">
+                                <a href="https://maps.app.goo.gl/8CaY9J8XCd59JqZf9" target="_blank"
+                                    class="action-btn btn-map" onclick="event.stopPropagation()">
                                     🗺️ Mở Bản Đồ
                                 </a>
                                 <button class="action-btn btn-flip" onclick="event.stopPropagation(); flipCard();">
@@ -322,17 +340,32 @@
 
                 </div>
             </div>
+
+            <!-- Nút Bắn Pháo Ăn Mừng Tùy Chọn Thêm Dưới Thẻ -->
+            <div class="card-stage-controls">
+                <button class="celebrate-salvo-btn" id="celebrate-salvo-btn">
+                    <span class="btn-sparkle">🎉</span> BẮN PHÁO ĂN MỪNG <span class="btn-sparkle">🎊</span>
+                </button>
+            </div>
         </div>
 
-        <!-- ================= NÚT ĐIỀU KHIỂN ÂM THANH ================= -->
+        <!-- ================= NÚT ĐIỀU KHIỂN ÂM THANH XẬP XÌNH ================= -->
         <button class="music-toggle" id="music-btn" aria-label="Toggle Sound">
-            <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+            <div class="music-equalizer" id="music-equalizer">
+                <span class="eq-bar eq-1"></span>
+                <span class="eq-bar eq-2"></span>
+                <span class="eq-bar eq-3"></span>
+                <span class="eq-bar eq-4"></span>
+            </div>
+            <svg class="music-icon" id="music-note-icon" viewBox="0 0 24 24" width="20" height="20"
+                xmlns="http://www.w3.org/2000/svg">
                 <ellipse cx="7" cy="17" rx="3" ry="2" fill="#0284C7" />
                 <rect x="9.5" y="8" width="2" height="9" fill="#0284C7" />
                 <ellipse cx="17" cy="14" rx="3" ry="2" fill="#0284C7" />
                 <rect x="19.5" y="5" width="2" height="9" fill="#0284C7" />
                 <rect x="9.5" y="8" width="12" height="2" fill="#0284C7" />
-                <line id="mute-slash" x1="3" y1="3" x2="21" y2="21" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" style="display: block;" />
+                <line id="mute-slash" x1="3" y1="3" x2="21" y2="21" stroke="#EF4444" stroke-width="2.5"
+                    stroke-linecap="round" style="display: block;" />
             </svg>
         </button>
     </div>

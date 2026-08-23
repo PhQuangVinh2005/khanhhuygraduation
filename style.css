@@ -68,7 +68,7 @@ body {
     padding-bottom: 24px;
 }
 
-/* Canvas hạt nền & pháo hoa xé túi */
+/* Canvas hạt nền & pháo hoa 3D Three.js */
 #particle-canvas {
     position: absolute;
     top: 0;
@@ -76,7 +76,7 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 2;
+    z-index: 25;
 }
 
 /* Hiệu ứng lóa sáng ma thuật Blue Sky khi xé túi */
@@ -396,9 +396,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     width: 100%;
     max-width: 78px;
+    perspective: 900px;
+    transform-style: preserve-3d;
+    cursor: pointer;
 }
 
 .pool-card-border {
@@ -409,11 +412,54 @@ body {
     overflow: hidden;
     background: #0F172A;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.2s ease;
+    transform-style: preserve-3d;
+    transition: transform 0.12s ease-out, box-shadow 0.25s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    will-change: transform;
+}
+
+.pool-card-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(56, 189, 248, 0.25) 40%,
+        rgba(250, 204, 21, 0.2) 60%,
+        transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: overlay;
+    transition: opacity 0.2s ease;
+}
+
+.pool-card-border:hover .pool-card-shine {
+    opacity: 1;
+}
+
+/* 3D Hover & Spin Animations */
+.pool-card-border.spinning-3d {
+    animation: card3DSpin 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes card3DSpin {
+    0% { transform: perspective(600px) rotateY(0deg) scale(1); }
+    50% { transform: perspective(600px) rotateY(180deg) scale(1.22) translateZ(25px); box-shadow: 0 12px 30px rgba(56, 189, 248, 0.8); }
+    100% { transform: perspective(600px) rotateY(360deg) scale(1.08) translateZ(10px); }
 }
 
 .common-border {
     border-color: #38BDF8;
+}
+
+.common-border:hover {
+    border-color: #7DD3FC;
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.6);
 }
 
 .rare-border {
@@ -421,14 +467,29 @@ body {
     box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
 }
 
+.rare-border:hover {
+    border-color: #22D3EE;
+    box-shadow: 0 6px 22px rgba(6, 182, 212, 0.7);
+}
+
 .sr-border {
     border-color: #A855F7;
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
 }
 
+.sr-border:hover {
+    border-color: #C084FC;
+    box-shadow: 0 6px 24px rgba(168, 85, 247, 0.8);
+}
+
 .special-border {
     border-color: #F59E0B;
     box-shadow: 0 0 14px rgba(245, 158, 11, 0.7);
+}
+
+.special-border:hover {
+    border-color: #FBBF24;
+    box-shadow: 0 6px 26px rgba(245, 158, 11, 0.9), 0 0 15px rgba(254, 240, 138, 0.8);
 }
 
 .pool-card-image {
@@ -437,6 +498,7 @@ body {
     object-fit: cover;
     display: block;
     transition: filter 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
 }
 
 .pool-card-border.blurred .pool-card-image {
@@ -547,6 +609,58 @@ body {
     font-weight: 800;
 }
 
+/* Dynamic Screen Shake Effects */
+.app-container.screen-shake-light {
+    animation: screenShakeLight 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+.app-container.screen-shake-medium {
+    animation: screenShakeMed 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+.app-container.screen-shake-heavy {
+    animation: screenShakeHeavy 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+.app-container.screen-shake-mega {
+    animation: screenShakeMega 0.75s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShakeLight {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-3px, 1.5px); }
+    40% { transform: translate(3px, -1.5px); }
+    60% { transform: translate(-1.5px, 2px); }
+    80% { transform: translate(1.5px, -1.5px); }
+}
+
+@keyframes screenShakeMed {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    20% { transform: translate(-5px, -3.5px) scale(1.008); }
+    40% { transform: translate(5px, 3.5px) scale(1.008); }
+    60% { transform: translate(-3.5px, 2.5px) scale(0.995); }
+    80% { transform: translate(3.5px, -2.5px) scale(1); }
+}
+
+@keyframes screenShakeHeavy {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-7px, -6px) rotate(-1.2deg); }
+    30% { transform: translate(7px, 5px) rotate(1.2deg); }
+    45% { transform: translate(-6px, 6px) rotate(-0.9deg); }
+    60% { transform: translate(6px, -5px) rotate(0.9deg); }
+    75% { transform: translate(-4px, 3px) rotate(-0.5deg); }
+    90% { transform: translate(4px, -3px) rotate(0.5deg); }
+}
+
+@keyframes screenShakeMega {
+    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    10% { transform: translate(-12px, -9px) scale(1.025) rotate(-2.5deg); }
+    20% { transform: translate(12px, 9px) scale(1.025) rotate(2.5deg); }
+    30% { transform: translate(-9px, 7px) scale(1.015) rotate(-1.8deg); }
+    40% { transform: translate(9px, -7px) scale(1.015) rotate(1.8deg); }
+    50% { transform: translate(-7px, -5px) scale(1.008) rotate(-1.2deg); }
+    60% { transform: translate(7px, 5px) scale(1.008) rotate(1.2deg); }
+    75% { transform: translate(-4px, 3px) scale(1) rotate(-0.6deg); }
+    90% { transform: translate(4px, -3px) scale(1) rotate(0.6deg); }
+}
+
 /* ==========================================================================
    GIAI ĐOẠN 3: RARE PHOTOCARD & 3D FLIP INVITATION
    ========================================================================== */
@@ -556,13 +670,59 @@ body {
     z-index: 20;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px 10px;
     perspective: 1400px;
 }
 
+/* Hào quang Godrays xoay vòng sau Photocard */
+.aura-godrays {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    transform: translate(-50%, -50%);
+    background: conic-gradient(
+        from 0deg,
+        rgba(56, 189, 248, 0.22) 0deg 20deg,
+        transparent 20deg 40deg,
+        rgba(245, 158, 11, 0.26) 40deg 60deg,
+        transparent 60deg 80deg,
+        rgba(56, 189, 248, 0.22) 80deg 100deg,
+        transparent 100deg 120deg,
+        rgba(245, 158, 11, 0.26) 120deg 140deg,
+        transparent 140deg 160deg,
+        rgba(56, 189, 248, 0.22) 160deg 180deg,
+        transparent 180deg 200deg,
+        rgba(245, 158, 11, 0.26) 200deg 220deg,
+        transparent 220deg 240deg,
+        rgba(56, 189, 248, 0.22) 240deg 260deg,
+        transparent 260deg 280deg,
+        rgba(245, 158, 11, 0.26) 280deg 300deg,
+        transparent 300deg 320deg,
+        rgba(56, 189, 248, 0.22) 320deg 340deg,
+        transparent 340deg 360deg
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.9;
+    animation: godraysSpin 15s linear infinite;
+    mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 72%);
+    -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 72%);
+}
+
+@keyframes godraysSpin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .card {
+    position: relative;
+    z-index: 10;
     width: 290px;
     height: 455px;
     cursor: pointer;
@@ -676,18 +836,31 @@ body {
     height: 18%;
     background: linear-gradient(180deg, #0B192C 0%, #050B1A 100%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 3px;
+    padding: 4px 10px;
     border-top: 2px solid rgba(56, 189, 248, 0.4);
 }
 
 .rarity-badge {
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
+    font-size: 7.5px;
     color: #FACC15;
     text-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
     letter-spacing: 0.5px;
     animation: pulse 1.8s infinite ease-in-out;
+}
+
+.photocard-name {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 0.3px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.6);
+    text-transform: capitalize;
 }
 
 /* --- MẶT SAU: THIỆP MỜI GRADUATION INVITATION --- */
@@ -840,27 +1013,70 @@ body {
     background: #CBD5E1;
 }
 
+/* Nút Bắn Pháo Ăn Mừng Dưới Thẻ */
+.card-stage-controls {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 30;
+}
+
+.celebrate-salvo-btn {
+    background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 50%, #F59E0B 100%);
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 2px solid #FEF08A;
+    box-shadow: 0 4px 18px rgba(14, 165, 233, 0.6), 0 0 12px rgba(245, 158, 11, 0.4);
+    cursor: pointer;
+    letter-spacing: 0.8px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: pulseButton 2.2s infinite ease-in-out;
+}
+
+.celebrate-salvo-btn:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 6px 24px rgba(14, 165, 233, 0.8), 0 0 18px rgba(245, 158, 11, 0.7);
+}
+
+.celebrate-salvo-btn:active {
+    transform: scale(0.95) translateY(1px);
+}
+
+@keyframes pulseButton {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.04); filter: brightness(1.15) drop-shadow(0 0 8px rgba(254, 240, 138, 0.7)); }
+}
+
 /* ==========================================================================
-   NÚT ÂM THANH
+   NÚT ÂM THANH XẬP XÌNH
    ========================================================================== */
 
 .music-toggle {
     position: fixed;
     bottom: 16px;
     right: 16px;
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    background: rgba(10, 25, 47, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(10, 25, 47, 0.9);
+    backdrop-filter: blur(10px);
     border: 2px solid #38BDF8;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 100;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: transform 0.2s ease;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), 0 0 15px rgba(56, 189, 248, 0.3);
+    transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .music-toggle:hover {
@@ -870,3 +1086,47 @@ body {
 .music-toggle:active {
     transform: scale(0.95);
 }
+
+.music-toggle.playing {
+    border-color: #F59E0B;
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5), 0 0 20px rgba(56, 189, 248, 0.6);
+    animation: musicPulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes musicPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+.music-equalizer {
+    display: none;
+    align-items: flex-end;
+    gap: 3px;
+    height: 18px;
+    width: 20px;
+}
+
+.music-toggle.playing .music-equalizer {
+    display: flex;
+}
+
+.music-toggle.playing .music-icon {
+    display: none;
+}
+
+.eq-bar {
+    width: 3px;
+    background: linear-gradient(180deg, #FEF08A, #0EA5E9);
+    border-radius: 2px;
+}
+
+.eq-1 { height: 40%; animation: eqJump 0.45s ease-in-out infinite alternate; }
+.eq-2 { height: 80%; animation: eqJump 0.6s ease-in-out infinite alternate 0.15s; }
+.eq-3 { height: 60%; animation: eqJump 0.35s ease-in-out infinite alternate 0.3s; }
+.eq-4 { height: 95%; animation: eqJump 0.5s ease-in-out infinite alternate 0.2s; }
+
+@keyframes eqJump {
+    0% { height: 20%; }
+    100% { height: 100%; }
+}
+

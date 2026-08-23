@@ -21,7 +21,7 @@
       ]
     },
     {
-      "source": "/(grad|assets|images)/(.*)",
+      "source": "/(.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp|mp3|wav|ogg|css|js))",
       "headers": [
         {
           "key": "Cache-Control",
